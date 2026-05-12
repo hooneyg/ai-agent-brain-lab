@@ -7,11 +7,11 @@
 > AI를 백엔드 시스템 안에 어떻게 통합하고 자율적으로 작동하게 할 것인지 증명합니다.
 
 <div align="center">
-  [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-  [![LangChain](https://img.shields.io/badge/LangChain-Enabled-00A67E?style=for-the-badge&logo=chainlink&logoColor=white)](https://www.langchain.com/)
-  [![FastAPI](https://img.shields.io/badge/FastAPI-High_Performance-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-  [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/hooneyg/ai-agent-brain-lab/actions)
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"></a>
+  <a href="https://www.langchain.com/"><img src="https://img.shields.io/badge/LangChain-Enabled-00A67E?style=for-the-badge&logo=chainlink&logoColor=white" alt="LangChain"></a>
+  <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-High_Performance-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"></a>
+  <a href="https://github.com/hooneyg/ai-agent-brain-lab/actions"><img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge&logo=githubactions&logoColor=white" alt="Build Status"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT"></a>
 </div>
 
 ---
