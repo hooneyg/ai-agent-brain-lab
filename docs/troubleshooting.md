@@ -149,3 +149,84 @@ spring:
         model: nomic-embed-text  # 인덱싱/검색 모두 이 모델 사용
 ```
 
+---
+
+## 7. Docker 빌드 시 Gradle Wrapper 권한 에러
+
+### 🚨 Problem (증상)
+`docker-compose up --build` 실행 시 Java 모듈 빌드 과정에서
+`Permission denied: ./gradlew` 에러 발생.
+
+### 🔍 Cause Analysis (원인 분석)
+- Windows에서 `git clone`한 경우 `gradlew` 파일의 실행 권한(`+x`)이 누락될 수 있음.
+- Docker 빌드 컨텍스트로 복사된 파일이 Windows 파일 시스템의 권한을 그대로 유지함.
+
+### ✅ Solution (해결 방안)
+```bash
+# 1. 호스트에서 실행 권한 부여
+git update-index --chmod=+x gradlew
+git commit -m "fix: gradlew 실행 권한 추가"
+
+# 2. 또는 Dockerfile에서 직접 권한 부여 (이미 적용됨)
+# RUN chmod +x gradlew
+```
+
+---
+
+## 8. Docker 컨테이너 간 통신 실패 (서비스명 해석 불가)
+
+### 🚨 Problem (증상)
+`agent-orchestrator` 컨테이너에서 `agent-core` 호출 시
+`UnknownHostException: agent-core` 또는 `Connection refused` 에러 발생.
+
+### 🔍 Cause Analysis (원인 분석)
+1. `docker-compose.yml`의 네트워크 설정이 누락되어 각 서비스가 서로 다른 네트워크에 배치됨.
+2. `application.yml`에서 `localhost`를 사용하고 있어 Docker 서비스명으로 변환되지 않음.
+3. 의존 서비스가 아직 기동 중(Health Check 미통과)인 상태에서 요청을 시도함.
+
+### ✅ Solution (해결 방안)
+```yaml
+# 1. docker-compose.yml에서 모든 서비스가 같은 네트워크를 사용하도록 설정
+networks:
+  agent-network:
+    driver: bridge
+
+# 2. application-docker.yml에서 서비스명 사용
+agent:
+  core:
+    url: http://agent-core:8000   # localhost → 서비스명
+
+# 3. depends_on + healthcheck로 기동 순서 보장
+depends_on:
+  agent-core:
+    condition: service_healthy
+```
+
+---
+
+## 9. Ollama 모델 다운로드 타임아웃 (docker-compose)
+
+### 🚨 Problem (증상)
+`docker-compose up` 실행 시 `ollama-init` 컨테이너가 모델 다운로드 중 타임아웃으로 실패.
+또는 디스크 공간 부족으로 모델 Pull이 중단됨.
+
+### 🔍 Cause Analysis (원인 분석)
+- `llama3.1` 모델은 약 4.7GB, `nomic-embed-text`는 약 274MB의 다운로드가 필요함.
+- 네트워크 대역폭이 낮거나 Docker 디스크 할당량이 부족한 경우 실패.
+- WSL2 환경에서 기본 가상 디스크 크기(256GB)를 초과하면 다운로드 불가.
+
+### ✅ Solution (해결 방안)
+```bash
+# 1. Docker에 모델 저장 전 호스트에서 사전 다운로드
+ollama pull llama3.1
+ollama pull nomic-embed-text
+
+# 2. Docker Desktop 디스크 할당량 확인
+# Settings > Resources > Disk image size 를 최소 50GB 이상으로 설정
+
+# 3. 경량 모델로 대체 (테스트 시)
+# docker-compose.yml의 ollama-init에서 모델 변경:
+# ollama pull phi3:mini      # 약 2.3GB — 가벼운 대안
+# ollama pull nomic-embed-text  # 임베딩은 가벼우므로 유지
+```
+

@@ -1,0 +1,16 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║         🐳 application-docker.yml — Docker 환경 전용 설정          ║
+# ║                                                                  ║
+# ║  [파일 목적]                                                     ║
+# ║  Docker 환경에서 agent-core의 호스트명을 Docker 서비스명으로         ║
+# ║  오버라이드합니다.                                                 ║
+# ║                                                                  ║
+# ║  @author Hooney — AI FullStack Developer                         ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# agent-core 연결 URL 오버라이드
+# 로컬: http://localhost:8000 (기본 application.yml)
+# Docker: http://agent-core:8000 (이 파일)
+agent:
+  core:
+    url: ${AGENT_CORE_URL:http://agent-core:8000}

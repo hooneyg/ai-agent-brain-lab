@@ -1,0 +1,28 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║         🐳 application-docker.yml — Docker 환경 전용 설정          ║
+# ║                                                                  ║
+# ║  [파일 목적]                                                     ║
+# ║  Docker 컨테이너 환경에서 서비스 간 통신 호스트명을 오버라이드합니다. ║
+# ║  로컬 개발(localhost)과 Docker(서비스명)의 차이를 프로파일로 분리.   ║
+# ║                                                                  ║
+# ║  [활성화 방법]                                                    ║
+# ║  1. docker-compose.yml에서 자동 활성화:                            ║
+# ║     SPRING_PROFILES_ACTIVE=docker                                ║
+# ║  2. 직접 실행 시:                                                 ║
+# ║     java -Dspring.profiles.active=docker -jar app.jar             ║
+# ║                                                                  ║
+# ║  @author Hooney — AI FullStack Developer                         ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+spring:
+  ai:
+    ollama:
+      # Docker 네트워크 내에서는 서비스명(ollama)으로 접근
+      # 로컬 개발(application.yml)에서는 localhost:11434
+      base-url: ${OLLAMA_BASE_URL:http://ollama:11434}
+
+      chat:
+        model: ${OLLAMA_CHAT_MODEL:llama3.1}
+
+      embedding:
+        model: ${OLLAMA_EMBEDDING_MODEL:nomic-embed-text}
