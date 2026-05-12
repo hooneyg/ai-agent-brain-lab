@@ -1,8 +1,8 @@
 {
   "status": "success",
   "data": {
-    "query": "Why is our production database experiencing high latency?",
-    "response": "Based on the retrieved infrastructure context, high latency in the production database is often caused by missing indexes on frequently queried columns or connection pool exhaustion. \n\nRecommended Action:\n1. Check the active connections using `pg_stat_activity`.\n2. Review the slow query log to identify queries taking longer than 100ms.\n3. Increase the connection pool size in PgBouncer if connections are saturated.",
+    "query": "우리 프로덕션 데이터베이스에서 높은 응답 지연(Latency)이 발생하는 이유가 뭐야?",
+    "response": "검색된 인프라 컨텍스트에 따르면, 프로덕션 데이터베이스의 높은 지연은 주로 자주 조회되는 컬럼에 인덱스가 누락되었거나 Connection Pool이 고갈되었을 때 발생합니다. \n\n[권장 조치사항]\n1. `pg_stat_activity`를 사용하여 현재 활성 커넥션 상태를 점검하세요.\n2. 슬로우 쿼리(Slow Query) 로그를 검토하여 실행 시간이 100ms 이상인 쿼리를 식별하세요.\n3. 만약 커넥션이 포화 상태라면 PgBouncer의 Connection Pool 크기를 증설하세요.",
     "sources": [
       "docs/database/troubleshooting/latency.md",
       "docs/database/tuning/connection-pool.md"

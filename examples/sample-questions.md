@@ -1,9 +1,14 @@
-# Sample Infrastructure Diagnosis Questions
+# 🧠 인프라 진단(Diagnosis) 샘플 질문 모음
 
-The following are example questions you can ask the AI Agent Brain to diagnose infrastructure issues based on the RAG context.
+아래는 AI Agent Brain에게 RAG (Retrieval-Augmented Generation) 컨텍스트를 기반으로 인프라 장애나 운영 절차에 대해 질문할 수 있는 한국어 예시들입니다.
 
-1. "Why is our production database experiencing high latency?"
-2. "How do I scale the event streaming cluster?"
-3. "What are the common causes for a 502 Bad Gateway in our API gateway?"
-4. "Show me the standard procedure for rotating database credentials."
-5. "Our Redis cache hit rate has dropped below 50%. What should I check?"
+1. **"우리 프로덕션 데이터베이스에서 높은 응답 지연(Latency)이 발생하는 이유가 뭐야?"**
+   - *목적*: DB 병목 현상 및 Connection Pool 등의 원인을 파악합니다.
+2. **"이벤트 스트리밍(Kafka/RabbitMQ) 클러스터를 스케일 아웃(Scale-out)하는 방법 알려줘."**
+   - *목적*: 트래픽 급증 시 메시지 브로커의 무중단 확장을 위한 절차를 조회합니다.
+3. **"우리 API 게이트웨이에서 502 Bad Gateway 에러가 자주 발생하는 일반적인 원인은 무엇이야?"**
+   - *목적*: 게이트웨이와 백엔드 서비스 간의 네트워크 연동 오류나 헬스체크 실패 원인을 진단합니다.
+4. **"데이터베이스 자격 증명(비밀번호 등)을 주기적으로 교체(Rotation)하는 표준 절차를 보여줘."**
+   - *목적*: 사내 보안 정책에 따른 안전한 Secret 관리 매뉴얼을 확인합니다.
+5. **"Redis 캐시 적중률(Hit Rate)이 50% 아래로 떨어졌는데, 어떤 부분을 점검해야 할까?"**
+   - *목적*: 캐시 메모리 오버플로우나 Eviction Policy (캐시 교체 정책) 문제를 점검하기 위한 가이드를 받습니다.
