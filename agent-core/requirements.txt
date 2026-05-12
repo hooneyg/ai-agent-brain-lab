@@ -1,27 +1,46 @@
 # ╔══════════════════════════════════════════════════════════════════╗
-# ║         🐍 requirements.txt (AI Agent Brain Core)               ║
+# ║         🐍 requirements.txt — AI Agent Brain Core 의존성          ║
 # ║                                                                  ║
-# ║  [라이브러리 역할]                                               ║
-# ║  1. LangChain: LLM과의 상호작용 및 에이전트 워크플로우 제어        ║
-# ║  2. FastAPI: 지능형 추론 결과를 제공하는 고성능 API 엔드포인트     ║
-# ║  3. ChromaDB: RAG 구현을 위한 임베딩 데이터 벡터 저장소            ║
+# ║  [파일 목적]                                                     ║
+# ║  Python agent-core 모듈의 모든 런타임 의존성을 명시합니다.          ║
+# ║  pip install -r requirements.txt 명령으로 일괄 설치할 수 있습니다.  ║
+# ║                                                                  ║
+# ║  [버전 정책]                                                     ║
+# ║  최소 호환 버전(>=)만 명시하여 보안 패치 자동 적용을 허용합니다.     ║
+# ║  프로덕션 배포 시에는 pip freeze > requirements.lock으로            ║
+# ║  정확한 버전을 고정하는 것을 권장합니다.                             ║
+# ║                                                                  ║
+# ║  [작성자] Hooney — AI FullStack Developer                        ║
 # ╚══════════════════════════════════════════════════════════════════╝
 
-# --- LLM & Agent Framework ---
-langchain>=0.1.0
-langchain-openai>=0.0.2
-langchain-community>=0.0.10
+# ──────────────────────────────────────────────────────────────────
+# LLM & Agent Framework
+# LangChain을 통해 ReAct 에이전트, 프롬프트 관리, 도구 체이닝을 구현한다.
+# ──────────────────────────────────────────────────────────────────
+langchain>=0.1.0                  # LangChain 코어 — 에이전트, 체인, 프롬프트 관리
+langchain-openai>=0.0.2           # OpenAI/OpenRouter 호환 LLM 클라이언트 (ChatOpenAI)
+langchain-community>=0.0.10       # 커뮤니티 통합 — DirectoryLoader, Chroma 등 서드파티 연동
 
-# --- API Server ---
-fastapi>=0.109.0
-uvicorn>=0.27.0
-pydantic>=2.5.0
+# ──────────────────────────────────────────────────────────────────
+# API Server
+# FastAPI 기반 비동기 REST API 서버를 구동한다.
+# agent-orchestrator(Java)가 이 서버의 엔드포인트를 호출한다.
+# ──────────────────────────────────────────────────────────────────
+fastapi>=0.109.0                  # 비동기 웹 프레임워크 — 자동 Swagger UI, 타입 검증
+uvicorn>=0.27.0                   # ASGI 서버 — FastAPI를 실제로 구동하는 런타임
+pydantic>=2.5.0                   # 데이터 검증 — 요청/응답 DTO 모델 정의
 
-# --- Vector DB & Embeddings ---
-chromadb>=0.4.22
-sentence-transformers>=2.3.0
-tiktoken>=0.5.2
+# ──────────────────────────────────────────────────────────────────
+# Vector DB & Embeddings (RAG 파이프라인)
+# 문서를 벡터로 변환하고 유사도 검색을 수행하는 RAG 핵심 컴포넌트
+# ──────────────────────────────────────────────────────────────────
+chromadb>=0.4.22                  # 벡터 저장소 — 임베딩 벡터를 저장/검색하는 로컬 DB
+sentence-transformers>=2.3.0      # HuggingFace 임베딩 모델 실행 런타임 (all-MiniLM-L6-v2)
+tiktoken>=0.5.2                   # OpenAI 토크나이저 — LLM 입력 토큰 수 계산에 사용
 
-# --- Utils ---
-python-dotenv>=1.0.0
-requests>=2.31.0
+# ──────────────────────────────────────────────────────────────────
+# Utilities
+# 환경 변수 관리 및 HTTP 통신을 위한 유틸리티
+# ──────────────────────────────────────────────────────────────────
+python-dotenv>=1.0.0              # .env 파일에서 환경 변수를 로드 (API Key 분리)
+requests>=2.31.0                  # HTTP 클라이언트 — 외부 API 호출 시 사용
