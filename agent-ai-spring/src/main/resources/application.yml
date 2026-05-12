@@ -1,0 +1,112 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║  🤖 application.yml — Spring AI + HuggingFace 설정 파일           ║
+# ║                                                                  ║
+# ║  [파일 목적]                                                     ║
+# ║  agent-ai-spring 모듈의 Spring AI, LLM, Embedding, VectorStore   ║
+# ║  설정을 관리합니다.                                               ║
+# ║                                                                  ║
+# ║  [API Key 설정 방법]                                              ║
+# ║  1. 환경 변수로 설정 (권장):                                       ║
+# ║     export HUGGINGFACE_API_KEY=hf_xxxxx                           ║
+# ║  2. .env 파일에 설정:                                             ║
+# ║     HUGGINGFACE_API_KEY=hf_xxxxx                                  ║
+# ║  3. 이 파일에 직접 입력 (비권장, 보안 위험):                        ║
+# ║     api-key: hf_xxxxx                                             ║
+# ║                                                                  ║
+# ║  [작성자] Hooney — AI FullStack Developer                        ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# ──────────────────────────────────────────────────────────────────
+# 서버 기본 설정
+# ──────────────────────────────────────────────────────────────────
+server:
+  # 포트: 8081 (agent-orchestrator: 8080, agent-core: 8000과 충돌 방지)
+  port: 8081
+
+spring:
+  application:
+    name: agent-ai-spring
+
+  # ──────────────────────────────────────────────────────────────
+  # Spring AI 설정
+  # ──────────────────────────────────────────────────────────────
+  ai:
+
+    # ────────────────────────────────────────────────────────────
+    # [옵션 1] HuggingFace Inference API (클라우드 방식)
+    # HuggingFace에서 호스팅하는 모델을 HTTP API로 호출한다.
+    # API Key 필요: https://huggingface.co/settings/tokens
+    # ────────────────────────────────────────────────────────────
+    huggingface:
+      chat:
+        # [HUGGINGFACE_API_KEY] — HuggingFace Access Token
+        # 발급: https://huggingface.co/settings/tokens → New Token → Read 권한
+        # 환경 변수로 주입: HUGGINGFACE_API_KEY
+        api-key: ${HUGGINGFACE_API_KEY:[HUGGINGFACE_API_KEY]}
+
+        # HuggingFace Inference Endpoint URL
+        # 기본 Serverless Inference API를 사용하거나,
+        # 전용 Inference Endpoint를 생성하여 URL을 지정할 수 있다.
+        # Serverless: https://api-inference.huggingface.co/models/{model_id}
+        url: ${HUGGINGFACE_INFERENCE_URL:https://api-inference.huggingface.co}
+
+    # ────────────────────────────────────────────────────────────
+    # [옵션 2] Ollama (로컬 방식 — API Key 불필요)
+    # 로컬에 설치된 Ollama 서버를 통해 오픈소스 모델을 실행한다.
+    # 설치: https://ollama.com → ollama pull llama3.1
+    # ────────────────────────────────────────────────────────────
+    ollama:
+      # Ollama 서버 주소 (기본 로컬)
+      base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+
+      chat:
+        # 채팅(LLM) 모델 — Ollama에서 pull한 모델명
+        # 추천 모델:
+        #   - llama3.1: Meta Llama 3.1 8B (범용, 추천)
+        #   - mistral: Mistral 7B (빠름)
+        #   - phi3: Microsoft Phi-3 3.8B (초경량)
+        #   - gemma2: Google Gemma 2 9B (한국어 양호)
+        model: ${OLLAMA_CHAT_MODEL:llama3.1}
+        options:
+          # temperature: 응답의 창의성/결정성 조절
+          # 0.0 = 결정적(동일 질문에 동일 답변), 1.0 = 창의적(다양한 답변)
+          # 인프라 진단에는 0.3 이하를 권장한다.
+          temperature: 0.3
+
+      embedding:
+        # 임베딩 모델 — RAG 벡터화에 사용
+        # 추천: nomic-embed-text (768차원, 균형 잡힌 성능)
+        # 경량: all-minilm (384차원, 빠른 속도)
+        model: ${OLLAMA_EMBEDDING_MODEL:nomic-embed-text}
+
+    # ────────────────────────────────────────────────────────────
+    # [참고] OpenAI 직접 사용 시 (Ollama/HuggingFace 대신)
+    # ────────────────────────────────────────────────────────────
+    # openai:
+    #   # [OPENAI_API_KEY] — OpenAI API Key
+    #   # 발급: https://platform.openai.com/api-keys
+    #   api-key: ${OPENAI_API_KEY:[OPENAI_API_KEY]}
+    #   chat:
+    #     model: gpt-4o-mini       # 저비용 추천 모델
+    #   embedding:
+    #     model: text-embedding-3-small  # 임베딩 전용 모델
+
+    # ────────────────────────────────────────────────────────────
+    # [참고] Anthropic Claude 사용 시
+    # ────────────────────────────────────────────────────────────
+    # anthropic:
+    #   # [ANTHROPIC_SECRET_KEY] — Anthropic API Key
+    #   # 발급: https://console.anthropic.com/settings/keys
+    #   api-key: ${ANTHROPIC_API_KEY:[ANTHROPIC_SECRET_KEY]}
+    #   chat:
+    #     model: claude-3-5-sonnet  # 균형 잡힌 모델
+
+# ──────────────────────────────────────────────────────────────────
+# 로깅 설정
+# ──────────────────────────────────────────────────────────────────
+logging:
+  level:
+    # Spring AI 내부 동작 로그 (디버깅 시 DEBUG로 변경)
+    org.springframework.ai: INFO
+    # 애플리케이션 로그
+    com.hooney.lab.agent.ai: DEBUG

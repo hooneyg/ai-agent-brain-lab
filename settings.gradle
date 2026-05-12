@@ -10,5 +10,10 @@
 
 rootProject.name = 'ai-agent-brain-lab'
 
-// Java 기반 오케스트레이터 모듈 포함
+// Java 기반 오케스트레이터 모듈 — Python agent-core와의 HTTP 브릿지 역할
 include 'agent-orchestrator'
+
+// ✨ [NEW] Spring AI + HuggingFace 모듈 — Java-native LLM/RAG 서비스
+// Python 없이 Java 단독으로 AI Chat, Embedding, RAG를 수행한다.
+// 포트: 8081 (agent-orchestrator: 8080과 충돌 방지)
+include 'agent-ai-spring'
