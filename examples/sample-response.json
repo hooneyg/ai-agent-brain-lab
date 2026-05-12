@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "data": {
+    "query": "Why is our production database experiencing high latency?",
+    "response": "Based on the retrieved infrastructure context, high latency in the production database is often caused by missing indexes on frequently queried columns or connection pool exhaustion. \n\nRecommended Action:\n1. Check the active connections using `pg_stat_activity`.\n2. Review the slow query log to identify queries taking longer than 100ms.\n3. Increase the connection pool size in PgBouncer if connections are saturated.",
+    "sources": [
+      "docs/database/troubleshooting/latency.md",
+      "docs/database/tuning/connection-pool.md"
+    ]
+  }
+}
