@@ -1,0 +1,43 @@
+/*
+ * ╔══════════════════════════════════════════════════════════════════╗
+ * ║         🐘 build.gradle (AI Agent Orchestrator)                 ║
+ * ║                                                                  ║
+ * ║  [설계 전략]                                                     ║
+ * ║  1. 비동기 처리: AI 추론 시간을 효율적으로 관리하기 위해 WebFlux 채택 ║
+ * ║  2. 확장성: 향후 gRPC 및 다양한 AI 서비스 연동을 고려한 의존성 설계 ║
+ * ╚══════════════════════════════════════════════════════════════════╝
+ */
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.0.6'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.hooney.lab.agent'
+version = '1.0.0'
+java.sourceCompatibility = JavaVersion.VERSION_21
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // WebFlux: AI 추론과의 비동기 통신을 위한 논블로킹 엔진
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    
+    // Validation: 요청 데이터 검증
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    
+    // Lombok: 코드 가독성 및 생산성 향상
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    
+    // Test: 유닛 테스트 및 통합 테스트
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

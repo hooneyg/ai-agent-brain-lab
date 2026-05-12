@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+venv_old/
+.venv/
+.env
+
+# Build and IDE
+.idea/
+.vscode/
+.gradle/
+build/
+bin/
+*.swp
+
+# RAG Data
+agent-core/data/
