@@ -1,162 +1,212 @@
 <div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=000080&height=150&section=header&text=AI%20Agent%20Brain%20Lab&fontSize=50&fontAlignY=35&fontColor=ffffff" />
-</div>
 
-# 🧠 ai-agent-brain-lab: AI Agent & RAG Architecture
+<img src="https://capsule-render.vercel.app/api?type=waving&color=000080&height=200&section=header&text=AI%20Agent%20Brain%20Lab&fontSize=50&animation=fadeIn&fontAlignY=38&fontColor=FFFFFF" />
 
-> AI를 백엔드 시스템 안에 어떻게 통합하고 자율적으로 작동하게 할 것인지 증명합니다.
+<h3>🧠 Java/Python Hybrid AI Agent, RAG Retrieval, and Infrastructure Automation Lab</h3>
 
-<div align="center">
-  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"></a>
-  <a href="https://www.langchain.com/"><img src="https://img.shields.io/badge/LangChain-Enabled-00A67E?style=for-the-badge&logo=chainlink&logoColor=white" alt="LangChain"></a>
-  <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-High_Performance-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"></a>
-  <a href="https://github.com/hooneyg/ai-agent-brain-lab/actions"><img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge&logo=githubactions&logoColor=white" alt="Build Status"></a>
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT"></a>
+<p>
+  <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/FastAPI-Agent_Core-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
+  <img src="https://img.shields.io/badge/Spring_Boot-Orchestrator-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" />
+  <img src="https://img.shields.io/badge/LangChain-RAG-00A67E?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/ChromaDB-Vector_Store-5B21B6?style=for-the-badge" />
+</p>
+
+<p>
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" />
+  <img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=flat-square&logo=githubactions&logoColor=white" />
+</p>
+
 </div>
 
 ---
 
-## 📌 1. Problem — 왜 만들었는가
-
-마이크로서비스 인프라의 규모가 커짐에 따라, 장애 발생 시 원인을 파악하고 조치하는 데 걸리는 시간(MTTR)이 증가합니다. 기존의 정적 알람 스크립트로는 복합적인 에러 상황에 유연하게 대처할 수 없습니다.
-
-따라서 사람의 개입 없이, **인프라 상태를 직접 진단하고 RAG 문서를 기반으로 해결책을 추론하여 조치**하는 자율적인 에이전트 브레인이 필요합니다. 이 랩은 Java/Spring 기반의 오케스트레이터와 Python 기반의 AI 에이전트를 어떻게 통합할 수 있는지 증명합니다.
+> 인프라 운영 지식, 기술 문서, 도구 실행 능력을 AI Agent 안에 통합하는 연구소입니다.  
+> Spring Boot 오케스트레이터와 FastAPI Agent Core를 분리하고, ReAct 추론과 RAG 검색을 통해 복합 장애 진단과 자동화 조치를 실험합니다.
 
 ---
 
-## 🏗️ 2. Architecture — 어떻게 설계했는가
+## 📌 Problem — 왜 만들었는가
+
+- **운영 지식 파편화**: 장애 대응 절차, 인프라 문서, 로그 분석 기준이 여러 문서와 사람에게 흩어져 있습니다.
+- **MTTR 증가**: 마이크로서비스와 인프라 규모가 커질수록 원인 파악과 조치 시간이 길어집니다.
+- **정적 알람의 한계**: 단순 threshold 알람은 복합 원인 분석과 다음 조치 제안까지 수행하지 못합니다.
+- **LLM 도입 경계 불명확**: AI가 추론하는 영역과 실제 도구를 실행하는 영역을 분리해야 운영 안정성을 확보할 수 있습니다.
+
+AI Agent Brain Lab은 Java/Spring 기반 오케스트레이션과 Python/FastAPI 기반 Agent Core를 결합해, RAG 기반 지식 검색과 Tool 기반 실행을 분리한 AI 운영 자동화 구조를 제시합니다.
+
+## 🏗️ Architecture — 어떻게 설계했는가
 
 ```mermaid
 graph TD
-    User([User / Developer]) <--> Orchestrator[Spring Boot Orchestrator]
-    Orchestrator <--> API[FastAPI Agent Server]
-    
+    User["User / Developer"] <--> Orchestrator["Spring Boot Orchestrator"]
+    Orchestrator <--> API["FastAPI Agent Server"]
+
     subgraph "Agent Brain Core"
-        API <--> Agent[ReAct Agent Engine]
-        Agent <--> RAG[RAG Retrieval Engine]
-        Agent <--> Tools[Infrastructure Tools]
+        API <--> Agent["ReAct Agent Engine"]
+        Agent <--> RAG["RAG Retrieval Engine"]
+        Agent <--> Tools["Infrastructure Tools"]
     end
-    
+
     subgraph "Knowledge & LLM"
-        RAG --> VectorDB[(ChromaDB)]
-        VectorDB -- Local Embedding --> HF[HuggingFace: all-MiniLM-L6-v2]
-        Agent -- LLM Request --> OR[OpenRouter API]
+        RAG --> VectorDB[("ChromaDB")]
+        VectorDB --> Embedding["HuggingFace Embedding"]
+        Agent --> LLM["OpenRouter-compatible LLM"]
     end
-    
+
     subgraph "External Targets"
-        Tools --> Infra[(infra-master-lab)]
-        Infra --> K8S[Kubernetes Cluster]
-        Infra --> Ansible[Ansible Playbooks]
+        Tools --> Infra["infra-master-lab"]
+        Infra --> K8S["Kubernetes"]
+        Infra --> Ansible["Ansible Playbooks"]
     end
 ```
 
----
-
-## 📂 3. Project Structure — 어디에 무엇이 있는가
+## 📂 Project Structure
 
 ```text
 ai-agent-brain-lab/
-├── agent-core/          # Python FastAPI 기반 AI 에이전트 코어
-│   ├── main.py          # FastAPI 진입점
-│   ├── requirements.txt # Python 의존성
-│   └── tests/           # 에이전트 코어 테스트
-├── agent-orchestrator/  # Java Spring Boot 기반 API 게이트웨이 및 오케스트레이션
-│   └── src/
-├── docs/                # 아키텍처 및 트러블슈팅 문서
-├── examples/            # API 요청 및 응답 샘플
-└── docker-compose.yml   # 전체 스택 실행을 위한 컨테이너 설정
+├── agent-core/                                # 🧠 Python FastAPI 기반 Agent Brain Core
+│   ├── main.py                                # 🚀 FastAPI 서버 진입점
+│   ├── requirements.txt                       # 📦 LangChain, FastAPI, ChromaDB 의존성
+│   └── tests/                                 # 🧪 RAG 검색, ReAct 추론, tool 흐름 테스트
+├── agent-orchestrator/                        # 🌐 Java Spring Boot API orchestration 계층
+│   └── src/                                   # 🛡️ API 경계, timeout, fallback 처리
+├── docs/                                      # 📚 RAG 인덱싱 대상 ADR/운영 문서
+├── examples/                                  # 🧾 Agent 요청/응답 샘플
+└── docker-compose.yml                         # 🐳 Agent Core, Vector DB 통합 실행 환경
 ```
 
----
+## 🎯 Key Features & Evidence — 무엇을 증명하는가
 
-## 🎯 4. Key Features & Evidence — 무엇을 증명하는가
+### 1. Java/Python Hybrid Agent Architecture
 
-- **Java/Python Hybrid Architecture**: Spring Boot 오케스트레이터와 FastAPI 에이전트를 분리하여 확장을 용이하게 했습니다.
-- **Autonomous Reasoning (ReAct Pattern)**: ReAct(Reason + Act) 패턴을 통해 복합 문제를 스스로 해결합니다.
-- **Context-Aware RAG**: 로컬 임베딩 모델(HuggingFace)과 ChromaDB를 활용해 사내 인프라 기술 문서를 검색합니다.
-- **Provider Agnostic LLM**: OpenRouter API를 연동하여 특정 LLM 벤더(OpenAI, Anthropic 등)에 종속되지 않습니다.
+| Component | Responsibility |
+| :--- | :--- |
+| **Spring Boot Orchestrator** | API 진입점, 인증/인가 연계, timeout/fallback 처리 |
+| **FastAPI Agent Core** | ReAct 추론, RAG 검색, tool execution orchestration |
+| **HTTP Boundary** | 언어와 런타임을 분리해 독립 배포와 장애 격리 가능 |
 
----
+**Evidence**
 
-## 🚀 5. Quick Start — 어떻게 실행하는가
+- Java 서비스와 Python Agent를 분리해 각 생태계의 장점을 활용합니다.
+- 오케스트레이터 테스트로 agent-core 장애, timeout, fallback 흐름을 검증합니다.
 
-### Environment Setup (Python Agent Core)
+### 2. ReAct Reasoning Engine
+
+| Feature | Description |
+| :--- | :--- |
+| **Reason + Act Loop** | 문제 분석, 도구 선택, 결과 해석을 반복하는 agent 흐름 |
+| **Tool Boundary** | 실제 인프라 조치 도구와 LLM 추론을 명시적으로 분리 |
+| **Traceable Steps** | Agent가 어떤 문서를 찾고 어떤 도구를 선택했는지 추적 가능 |
+
+**Evidence**
+
+- Python `agent-core` 테스트로 RAG 검색과 ReAct 추론 흐름을 검증합니다.
+- 도구 실행 경계를 분리해 LLM이 직접 운영 환경을 변경하지 않도록 설계합니다.
+
+### 3. Context-aware RAG Retrieval
+
+| Feature | Description |
+| :--- | :--- |
+| **Local Embedding** | HuggingFace embedding으로 내부 문서를 벡터화 |
+| **ChromaDB** | 장애 대응 문서, ADR, troubleshooting 문서를 검색 가능한 지식으로 저장 |
+| **Infra Docs Path** | `infra-master-lab` 등 연구소 문서를 agent context로 활용 |
+
+**Evidence**
+
+- 문서 기반 답변을 생성해 hallucination 가능성을 줄입니다.
+- 운영 문서가 업데이트되면 agent의 지식 기반도 함께 확장될 수 있습니다.
+
+### 4. Provider-agnostic LLM Gateway
+
+| Feature | Description |
+| :--- | :--- |
+| **OpenRouter-compatible API** | 특정 LLM 벤더에 고정되지 않는 호출 구조 |
+| **Model Switch** | 모델 변경을 환경 변수로 관리 |
+| **Fallback Ready** | provider 장애 시 대체 모델 또는 fallback 응답으로 확장 가능 |
+
+**Evidence**
+
+- `.env` 설정으로 base URL과 model을 분리해 실험과 운영 전환을 쉽게 만듭니다.
+
+## 🚀 Quick Start — 어떻게 실행하는가
+
+### Python Agent Core
+
 ```bash
-cd agent-core
+git clone https://github.com/hooneyg/ai-agent-brain-lab.git
+cd ai-agent-brain-lab/agent-core
+
 python -m venv venv
-# Windows: .\venv\Scripts\Activate.ps1
-# Mac/Linux: source venv/bin/activate
+./venv/Scripts/Activate.ps1
 pip install -r requirements.txt
+python main.py
 ```
 
-### Configuration (`agent-core/.env`)
+### Configuration
+
 ```env
-OPENROUTER_API_KEY=[OPEN_AI_API_KEY]
+OPENROUTER_API_KEY=your_openrouter_api_key
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
 OPENROUTER_MODEL=openai/gpt-4o
 INFRA_DOCS_PATH=../docs
 ```
 
-### Running the Server
+### Java Orchestrator
+
 ```bash
-# Agent Core 실행
-cd agent-core
-python main.py
+cd ../agent-orchestrator
+./gradlew bootRun
 ```
 
----
+## 🧪 Tests — 어떻게 검증했는가
 
-## 🧪 6. Tests — 어떻게 검증했는가
-
-Python `agent-core` 테스트 (RAG 검색 흐름 및 ReAct 추론 검증):
 ```bash
 cd agent-core
 pytest tests/
-```
 
-Java `agent-orchestrator` 테스트 (통신 장애 Fallback 및 타임아웃 검증):
-```bash
-cd agent-orchestrator
+cd ../agent-orchestrator
 ./gradlew test
 ```
 
----
+| Test Target | What It Proves |
+| :--- | :--- |
+| RAG retrieval | 문서 검색과 context 구성 |
+| ReAct flow | 추론, 도구 선택, 결과 해석 흐름 |
+| Orchestrator fallback | Agent 서버 장애와 timeout 대응 |
+| API contract | Java/Python 경계의 요청/응답 스펙 |
 
-## 📚 7. Documentation — 더 깊게 볼 문서
-
-- [🛠️ Troubleshooting Guide](./docs/troubleshooting.md): RAG 문서 인덱싱 누락 및 의존성 충돌 해결 기록
-- [📘 Tech Wiki: ReAct Agent Engine](./docs/decisions/ADR-001-react-agent-engine.md): ReAct 엔진 설계 및 결정 사항
-
----
-
-## 🧭 8. Roadmap — 다음 보완 계획
+## 🧭 Roadmap
 
 - [ ] ChromaDB 연동 최적화 및 pgvector 이관 검토
 - [ ] Prompt Template Versioning 적용
-- [ ] LLM Response Tracing (OpenTelemetry 또는 LangSmith 연동)
-- [ ] TOP 6 LAB 전체 문서를 검색하는 Lab Assistant 기능 확장
+- [ ] LLM Response Tracing
+- [ ] OpenTelemetry 또는 LangSmith 연동
+- [ ] TOP 6 Lab 전체 문서를 검색하는 Lab Assistant 확장
 
----
-
-## 🔗 9. Related Labs — TOP 6 안에서 어떻게 연결되는가
+## 🔗 Related Labs
 
 | Related Lab | 연결 이유 |
-| --- | --- |
-| `infra-master-lab` | 에이전트가 관리하고 모니터링할 인프라 환경의 기준 제공 |
-| `security-auth-core` | AI API 호출 및 오케스트레이터 통신의 인증/인가 기준 |
-| `database-master-lab` | 대규모 로그 및 상태 저장을 위한 성능 최적화 기준 |
-| `event-streaming-lab` | AI 비동기 태스크 처리와 알람 전달의 이벤트 기준 |
-| `realtime-comm-lab` | 사용자와 챗봇 형식의 실시간 소통을 위한 연결 기준 |
+| :--- | :--- |
+| `infra-master-lab` | Agent가 진단하고 조치할 인프라 기준 |
+| `security-auth-core` | AI API 호출과 오케스트레이터 통신의 인증/인가 기준 |
+| `database-master-lab` | 로그, 상태, 벡터 저장소의 성능 기준 |
+| `event-streaming-lab` | 비동기 AI task와 알림 이벤트 기준 |
+| `realtime-comm-lab` | 사용자와 AI Agent 간 실시간 대화 채널 기준 |
 
----
+## 📚 Documentation
 
-## 📄 10. License
+- [Troubleshooting Guide](./docs/troubleshooting.md)
+- [ADR-001: ReAct Agent Engine](./docs/decisions/ADR-001-react-agent-engine.md)
+
+## 📄 License
 
 This project is licensed under the [MIT License](./LICENSE).
 
 ---
+
 <div align="center">
-<b>Built with ❤️ by <a href="https://github.com/hooneyg">Hooney</a> — AI FullStack Developer & Enterprise Solution Architect</b>
+<b>Built by <a href="https://github.com/hooneyg">Hooney</a> — AI FullStack Developer & Enterprise Solution Architect</b>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=000080&height=100&section=footer" />
 </div>
