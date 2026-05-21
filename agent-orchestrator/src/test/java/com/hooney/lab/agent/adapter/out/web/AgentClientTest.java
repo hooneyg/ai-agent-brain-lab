@@ -44,9 +44,16 @@ class AgentClientTest {
     }
 
     @AfterEach
-    void tearDown() throws IOException {
-        mockWebServer.shutdown();
+    void tearDown() {
+        try {
+            if (mockWebServer != null) {
+                mockWebServer.shutdown();
+            }
+        } catch (IOException e) {
+            // 타임아웃 테스트 등으로 인해 지연 상태인 소켓이 강제 종료되면서 발생하는 예외는 무시합니다.
+        }
     }
+
 
     @Test
     @DisplayName("정상적인 askAgent 요청에 대해 결과를 파싱하여 반환하는지 테스트")
