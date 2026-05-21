@@ -72,7 +72,20 @@ public class AgentClient {
                 // 요청 바디: { "query": "사용자 질문" }
                 .bodyValue(Map.of("query", query))
                 .retrieve()
-                .bodyToMono(Map.class);
+                .bodyToMono(Map.class)
+                .timeout(java.time.Duration.ofSeconds(10)) // 10초 타임아웃 설정
+                .onErrorResume(java.util.concurrent.TimeoutException.class, 
+                        ex -> Mono.just(Map.of(
+                                "query", query,
+                                "answer", "죄송합니다. AI 에이전트 서버로부터 응답이 지연되어 타임아웃이 발생했습니다.",
+                                "metadata", Map.of("error", "timeout")
+                        )))
+                .onErrorResume(Exception.class,
+                        ex -> Mono.just(Map.of(
+                                "query", query,
+                                "answer", "죄송합니다. AI 에이전트 서버와의 통신 중 에러가 발생했습니다: " + ex.getMessage(),
+                                "metadata", Map.of("error", "failed")
+                        )));
     }
 
     /**
@@ -89,6 +102,11 @@ public class AgentClient {
                 .uri("/ingest")
                 .retrieve()
                 .bodyToMono(Map.class)
-                .map(res -> res.get("message").toString());
+                .timeout(java.time.Duration.ofSeconds(10)) // 10초 타임아웃 설정
+                .map(res -> {
+                    Object msg = res.get("message");
+                    return msg != null ? msg.toString() : "Knowledge ingestion started.";
+                })
+                .onErrorReturn("RAG 지식 베이스 업데이트 요청 중 오류가 발생했습니다.");
     }
 }

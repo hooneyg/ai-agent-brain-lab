@@ -12,7 +12,12 @@
   <img src="https://img.shields.io/badge/ChromaDB-Vector_Store-5B21B6?style=for-the-badge" />
 </p>
 
-<p>
+<p align="center">
+  <b>🔗 Homepage / Demo:</b> <a href="https://hooneyg.github.io/ai-agent-brain-lab">hooneyg.github.io/ai-agent-brain-lab</a><br>
+  <b>🧪 API Docs / Swagger:</b> <a href="http://localhost:8080/swagger-ui.html">Orchestrator Swagger UI</a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" />
   <img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=flat-square&logo=githubactions&logoColor=white" />
 </p>
